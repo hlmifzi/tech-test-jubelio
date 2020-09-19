@@ -15,19 +15,15 @@ class App extends Component {
   }
 
   async componentWillMount() {
-    // const getData = await ROOT_URL.get('user')
-    // this.setState({data:getData.data})
-    console.log('cwm')
     setTimeout(async () => {
       const getData = await ROOT_URL.get('user')
       this.setState({ data: getData.data })
-      console.log('hasil')
     }, 3000)
 
   }
   render() {
     console.log('render')
-    
+
     return (
       <Fragment>
         <Nav />

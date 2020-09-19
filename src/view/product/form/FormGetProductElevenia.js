@@ -1,53 +1,42 @@
-import React, { Component } from 'react'
-import { Form,Row,Col } from 'react-bootstrap'
-import { inject, observer } from "mobx-react";
+import React, { useState, useContext } from 'react'
+import { Form, Row, Col } from 'react-bootstrap'
+import { observer } from "mobx-react";
 import { ButtonComponent } from "../../../reusableComponents/Widgets";
 import Swal from "../../../reusableComponents/notification/Swal";
 
-@inject('store')
-@observer
+import ProductStore from '../../../store/ProductStore'
+const FormGetProductElevenia = observer(() => {
+  const store = useContext(ProductStore)
+  const [prdNo, setPrdNo] = useState("")
 
-class FormGetProductElevenia extends Component {
-    state = {
-      prdNo : ""
-    }
+  const _getProductFromEleveniaHandler = async () => {
+    const triggerGetPrdEleven = await store.getProductFromElevenia(prdNo)
 
-    _getProductFromEleveniaHandler = async () => {
-      try {
-        const triggerGetPrdEleven  = await this.props.store.getProductFromElevenia(this.state.prdNo)
-        if (triggerGetPrdEleven.status >= 200) {
-          Swal.success(triggerGetPrdEleven.message)
-        } else {
-          Swal.failed(triggerGetPrdEleven.message)
-        }
-      } catch (error) {
-        Swal.failed('gagal mendapatkan data')
-      }
-    }
+    if (triggerGetPrdEleven.status >= 200)
+      Swal.success(triggerGetPrdEleven.message)
+    else
+      Swal.failed(triggerGetPrdEleven.message)
+  }
 
-    render() {
-        return (
-            <div class="col-md-12">
-            <Form style={margin}>
-              <Row>
-                <Col sm={10}>
-                  <Form.Control onChange={(e)=>(this.setState({prdNo:e.target.value}))} placeholder="Masukkan Kode Produk yang akan ditarik" />
-                </Col>
-                <Col>
-                  <ButtonComponent
-                    color="warning"
-                    text="Tarik Produk"
-                    onClick={this._getProductFromEleveniaHandler}
-                  />
-                </Col>
-              </Row>
-            </Form>
-          </div>
-        )
-    }
-}
+  return (
+    <div class="col-md-12">
+      <Form style={{ marginTop: '20px' }}>
+        <Row>
+          <Col sm={10}>
+            <Form.Control onChange={(e) => setPrdNo(e.target.value)} placeholder="Masukkan Kode Produk yang akan ditarik" />
+          </Col>
+          <Col>
+            <ButtonComponent
+              color="warning"
+              text="Tarik Produk"
+              onClick={_getProductFromEleveniaHandler}
+            />
+          </Col>
+        </Row>
+      </Form>
+    </div>
+  )
+})
 
-
-const margin = { marginTop: '20px' }
 
 export default FormGetProductElevenia

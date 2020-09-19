@@ -64,7 +64,6 @@ export const TableComponent = (props) => {
 const css = { marginTop: '20px', maxHeight: '450px', minHeight: '450px' }
 
 export const CardComponent = (props) => {
-
     let data = props.data.map((v, k) => {
         let longDesc = v.htmlDetail
         let deskripsi = longDesc.substring(0, 60) + "..."
@@ -94,13 +93,13 @@ export const CardComponent = (props) => {
     })
 
     return (
-        <CardDeck style={{ marginTop: '30px',marginBottom: '50px'  }}>
+        <CardDeck style={{ marginTop: '30px', marginBottom: '50px' }}>
             {data}
         </CardDeck>
     )
 }
 
-const cssCardHeaderComponent = { marginTop: '20px',marginBottom: '50px' }
+const cssCardHeaderComponent = { marginTop: '20px', marginBottom: '50px' }
 
 export const CardHeaderComponent = ({ data, onClickDelete, onClickEdit }) => {
     return (
@@ -140,15 +139,15 @@ export const CardHeaderComponent = ({ data, onClickDelete, onClickEdit }) => {
 }
 
 
-export const CardHeaderComponentEdit = ({ data, onClickUpdate, sstSend }) => {
-    
+export const CardHeaderComponentEdit = ({ data, onClickUpdate, onChange }) => {
+
     return (
         <Card style={cssCardHeaderComponent}>
             <Card.Header>
                 <Row>
                     <Col>
                         Detail Produk SKU :
-                    <Form.Control onChange={sstSend.SKU} size="sm" type="text" placeholder="Masukkan" value={data.SKU} />
+                    <Form.Control onChange={onChange.SKU} size="sm" type="text" placeholder="Masukkan" value={data.SKU} />
                     </Col>
                 </Row>
 
@@ -162,17 +161,17 @@ export const CardHeaderComponentEdit = ({ data, onClickUpdate, sstSend }) => {
                     <Col>
                         <Card.Title>
                             Nama Produk
-                            <Form.Control onChange={sstSend.prdnm} size="sm" type="text" placeholder="Masukkan SKU" value= {data.prdnm}/>  
+                            <Form.Control onChange={onChange.prdnm} size="sm" type="text" placeholder="Masukkan SKU" value={data.prdnm} />
                         </Card.Title>
                         <div style={{ backgroundColor: '#f7f7f7', color: '#ffc107', textAlign: 'right', padding: '10px', fontSize: '2em' }} >
                             <Row>
                                 <Col>Rp  </Col>
-                                <Col><Form.Control onChange={sstSend.Selprc} size="sm" type="number" placeholder="Masukkan Harga" value={data.Selprc}/>  </Col>
+                                <Col><Form.Control onChange={onChange.Selprc} size="sm" type="number" placeholder="Masukkan Harga" value={data.Selprc} />  </Col>
                             </Row>
                         </div>
                         <Card.Text>
-                        <Form.Control onChange={sstSend.htmlDetail} as="textarea" rows="3" value={data.htmlDetail} />
-                        
+                            <Form.Control onChange={onChange.htmlDetail} as="textarea" rows="3" value={data.htmlDetail} />
+
                         </Card.Text>
 
                         <div style={{ float: 'right', marginTop: '20px' }}>

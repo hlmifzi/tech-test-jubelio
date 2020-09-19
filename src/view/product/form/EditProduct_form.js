@@ -1,69 +1,63 @@
 
-import React, { Component, Fragment } from 'react'
+import React, { useState, useContext } from 'react'
 import Nav from '../../../reusableComponents/NavComponent';
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import { CardHeaderComponentEdit } from "../../../reusableComponents/Widgets";
 import { Container } from 'react-bootstrap'
 import Swal from "../../../reusableComponents/notification/Swal";
 
+import ProductStore from '../../../store/ProductStore'
+import { useDidMount } from '../../../utils/componentLifeCycle'
 
-@inject('store')
-@observer
-
-class EditProduct_form extends Component {
-
-  state = {
-    SKU: "",
-    prdnm: "",
-    Selprc: "",
-    htmlDetail: "",
-  }
-
-  async componentWillMount() {
-    try {
-      await this.props.store.getProductDetail(this.props.match.params.id)
-      this.setState({
-        SKU: this.props.store.productDetail.SKU,
-        prdnm: this.props.store.productDetail.prdnm,
-        prdImg01: this.props.store.productDetail.prdImg01,
-        Selprc: this.props.store.productDetail.Selprc,
-        htmlDetail: this.props.store.productDetail.htmlDetail
-      })
-    } catch (e) {
-      Swal.failed(e.message)
-    }
-  }
-
-  _updateProductHandler = async () => {  
-    try {
-      await this.props.store.updateProduct(this.props.match.params.id, this.state)
-      await Swal.success('Selamat Datang Di Jubelio')
-      this.props.history.push('/')
-    } catch (e) {
-      Swal.failed(e.message)
-    }
-  }
-
-  sstSend = {
-    SKU: (e) => (this.setState({ SKU: e.target.value })),
-    prdnm: (e) => (this.setState({ prdnm: e.target.value })),
-    Selprc: (e) => (this.setState({ Selprc: e.target.value })),
-    htmlDetail: (e) => (this.setState({ htmlDetail: e.target.value }))
-  }
-
-  render() {  
-    return (
-      <Fragment>
-        <Nav />
-        <Container>
-          <CardHeaderComponentEdit
-            data={this.state} onClickUpdate={this._updateProductHandler} sstSend={this.sstSend}
-          />
-        </Container>
-      </Fragment>
-    )
-  }
+const initialState = {
+  SKU: "",
+  prdnm: "",
+  prdImg01: "",
+  Selprc: "",
+  htmlDetail: "",
 }
+const EditProduct_form = observer((props) => {
+  const store = useContext(ProductStore)
+  const [state, setState] = useState(initialState)
 
+  const _getProductDetail = () => {
+    store.getProductDetail(props.match.params.id)
+    setState({
+      SKU: store.productDetail.SKU,
+      prdnm: store.productDetail.prdnm,
+      prdImg01: store.productDetail.prdImg01,
+      Selprc: store.productDetail.Selprc,
+      htmlDetail: store.productDetail.htmlDetail
+    })
+  }
+
+  const _updateProductHandler = async () => {
+    await store.updateProduct(props.match.params.id, state)
+    await Swal.success('Berhasil di update')
+    props.history.push('/')
+  }
+
+  const onChange = {
+    SKU: (e) => (setState({ ...state, SKU: e.target.value })),
+    prdnm: (e) => (setState({ ...state, prdnm: e.target.value })),
+    Selprc: (e) => (setState({ ...state, Selprc: e.target.value })),
+    htmlDetail: (e) => (setState({ ...state, htmlDetail: e.target.value }))
+  }
+
+  useDidMount(() => {
+    _getProductDetail()
+  })
+
+  return (
+    <>
+      <Nav />
+      <Container>
+        <CardHeaderComponentEdit
+          data={state} onClickUpdate={_updateProductHandler} onChange={onChange}
+        />
+      </Container>
+    </>
+  )
+})
 
 export default EditProduct_form
