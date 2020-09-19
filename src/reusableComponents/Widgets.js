@@ -65,6 +65,7 @@ const css = { marginTop: '20px', maxHeight: '450px', minHeight: '450px' }
 
 export const CardComponent = (props) => {
     let data = props.data.map((v, k) => {
+        console.log("CardComponent -> v", v)
         let longDesc = v.htmlDetail
         let deskripsi = longDesc.substring(0, 60) + "..."
         let titleDesc = v.prdnm

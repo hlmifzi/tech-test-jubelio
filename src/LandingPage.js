@@ -12,25 +12,20 @@ import ProductStore from './store/ProductStore'
 import { useDidMount } from './utils/componentLifeCycle'
 
 const App = observer(() => {
-  const store = useContext(ProductStore)
-
-  const getproduct = async () => {
-    const data = await store.getProduct()
-    console.log("getproduct -> data", data)
-  }
+  const { getProduct, product, carousel } = useContext(ProductStore)
 
   useDidMount(() => {
-    getproduct()
+    getProduct()
   })
 
   return (
     <>
       <Nav />
-      <CarouselSkeleton datas={store.carousel} />
+      <CarouselSkeleton datas={carousel} />
       <Container>
         <FormGetProductElevenia />
         <CardComponent
-          data={store.product}
+          data={product}
         />
       </Container>
     </>

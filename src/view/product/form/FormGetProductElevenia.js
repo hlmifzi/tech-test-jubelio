@@ -6,11 +6,11 @@ import Swal from "../../../reusableComponents/notification/Swal";
 
 import ProductStore from '../../../store/ProductStore'
 const FormGetProductElevenia = observer(() => {
-  const store = useContext(ProductStore)
+  const { getProductFromElevenia } = useContext(ProductStore)
   const [prdNo, setPrdNo] = useState("")
 
   const _getProductFromEleveniaHandler = async () => {
-    const triggerGetPrdEleven = await store.getProductFromElevenia(prdNo)
+    const triggerGetPrdEleven = await getProductFromElevenia(prdNo)
 
     if (triggerGetPrdEleven.status >= 200)
       Swal.success(triggerGetPrdEleven.message)

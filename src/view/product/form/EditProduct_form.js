@@ -17,22 +17,22 @@ const initialState = {
   htmlDetail: "",
 }
 const EditProduct_form = observer((props) => {
-  const store = useContext(ProductStore)
+  const { getProductDetail, updateProduct, productDetail } = useContext(ProductStore)
   const [state, setState] = useState(initialState)
 
   const _getProductDetail = () => {
-    store.getProductDetail(props.match.params.id)
+    getProductDetail(props.match.params.id)
     setState({
-      SKU: store.productDetail.SKU,
-      prdnm: store.productDetail.prdnm,
-      prdImg01: store.productDetail.prdImg01,
-      Selprc: store.productDetail.Selprc,
-      htmlDetail: store.productDetail.htmlDetail
+      SKU: productDetail.SKU,
+      prdnm: productDetail.prdnm,
+      prdImg01: productDetail.prdImg01,
+      Selprc: productDetail.Selprc,
+      htmlDetail: productDetail.htmlDetail
     })
   }
 
   const _updateProductHandler = async () => {
-    await store.updateProduct(props.match.params.id, state)
+    await updateProduct(props.match.params.id, state)
     await Swal.success('Berhasil di update')
     props.history.push('/')
   }

@@ -10,10 +10,10 @@ import { useDidMount } from '../../../utils/componentLifeCycle'
 
 
 const DeatilProduct = observer((props) => {
-  const store = useContext(ProductStore)
+  const { getProductDetail, updateProduct, productDetail } = useContext(ProductStore)
 
   const _getProductDetail = async () => {
-    await store.getProductDetail(props.match.params.id)
+    await getProductDetail(props.match.params.id)
   }
 
   const _deleteProductHandler = () => {
@@ -27,7 +27,7 @@ const DeatilProduct = observer((props) => {
         cancelButtonText: 'No, keep it'
       }).then((result) => {
         if (result.value) {
-          let action = store.updateProduct(props.match.params.id, { 'is_active': 'N' })
+          let action = updateProduct(props.match.params.id, { 'is_active': 'N' })
           Swal.fire(
             'Deleted!',
             action.message,
@@ -63,7 +63,7 @@ const DeatilProduct = observer((props) => {
       <Nav />
       <Container>
         <CardHeaderComponent
-          data={store.productDetail}
+          data={productDetail}
           onClickDelete={_deleteProductHandler}
           onClickEdit={_editProductHandler}
         />
